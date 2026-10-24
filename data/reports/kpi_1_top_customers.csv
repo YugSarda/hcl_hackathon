@@ -1,0 +1,6 @@
+customer_id,customer_name,txn_count,net_transaction_value,refund_txns,value_rank
+C7249,Customer_23,4,561658.0,0.0,1
+C035,Customer_35,3,483102.0,0.0,2
+C152,Customer_152,3,434678.0,0.0,3
+C054,Customer_54,3,421561.0,0.0,4
+C059,Customer_59,4,389406.0,0.0,5

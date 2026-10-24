@@ -1,0 +1,312 @@
+========================================================================
+RETAIL BANKING PIPELINE - STEP 3
+DATA-QUALITY / SILVER LAYER REPORT
+========================================================================
+Run timestamp (UTC): 2026-10-24T07:05:33.194726+00:00
+Bronze source DB    : C:\Users\yugsa\hcl_hackathon\data\bronze\retail_banking_bronze.duckdb
+Silver output DB    : C:\Users\yugsa\hcl_hackathon\data\silver\retail_banking_silver.duckdb
+
+NOTE: Bronze/raw data was only READ, never modified.
+      Accepted and quarantined records are in SEPARATE Silver tables.
+      Every quarantined record carries explicit reason codes.
+      Warnings do NOT cause rejection unless a hard rule also applies.
+
+------------------------------------------------------------------------
+Source file : branches.csv (Day 1)
+Bronze table: bronze_branches_day1 (branches)
+Records received : 102
+Records accepted : 99
+Records quarantined (hard errors): 3
+Accepted with warnings : 95
+
+Rejection reasons (hard errors):
+  DUPLICATE_BRANCH_ID                 3
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_REGION_CASE            95
+  MISSING_MANAGER_NAME                4
+
+------------------------------------------------------------------------
+Source file : customers.csv (Day 1)
+Bronze table: bronze_customers_day1 (customers)
+Records received : 257
+Records accepted : 231
+Records quarantined (hard errors): 26
+Accepted with warnings : 4
+
+Rejection reasons (hard errors):
+  DUPLICATE_CUSTOMER_ID               6
+  FUTURE_DOB                          4
+  INVALID_EMAIL                       12
+  MISSING_ACCOUNT_ID                  4
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_GENDER                 4
+
+------------------------------------------------------------------------
+Source file : transactions.csv (Day 1)
+Bronze table: bronze_transactions_day1 (transactions)
+Records received : 940
+Records accepted : 0
+Records quarantined (hard errors): 940
+Accepted with warnings : 0
+
+Rejection reasons (hard errors):
+  DUPLICATE_TRANSACTION_ID            40
+  UNKNOWN_BRANCH_ID                   37
+  UNKNOWN_PRODUCT_ID                  940
+
+------------------------------------------------------------------------
+Source file : branches_day2.csv (Day 2)
+Bronze table: bronze_branches_day2 (branches)
+Records received : 2
+Records accepted : 2
+Records quarantined (hard errors): 0
+Accepted with warnings : 2
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_REGION_CASE            2
+
+------------------------------------------------------------------------
+Source file : customer_updates_day2.csv (Day 2)
+Bronze table: bronze_customer_updates_day2 (customers)
+Records received : 47
+Records accepted : 44
+Records quarantined (hard errors): 3
+Accepted with warnings : 1
+
+Rejection reasons (hard errors):
+  INVALID_EMAIL                       3
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_GENDER                 1
+
+------------------------------------------------------------------------
+Source file : products_day2.json (Day 2)
+Bronze table: bronze_products_day2 (products)
+Records received : 18
+Records accepted : 17
+Records quarantined (hard errors): 1
+Accepted with warnings : 17
+
+Rejection reasons (hard errors):
+  MISSING_PRODUCT_NAME                1
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_CATEGORY_CASE          17
+  IS_ACTIVE_STRING                    17
+
+------------------------------------------------------------------------
+Source file : transactions_day2.csv (Day 2)
+Bronze table: bronze_transactions_day2 (transactions)
+Records received : 199
+Records accepted : 0
+Records quarantined (hard errors): 199
+Accepted with warnings : 0
+
+Rejection reasons (hard errors):
+  DUPLICATE_TRANSACTION_ID            7
+  UNKNOWN_BRANCH_ID                   196
+  UNKNOWN_PRODUCT_ID                  182
+
+========================================================================
+OVERALL TOTALS
+========================================================================
+Total records received   : 1565
+Total records accepted   : 393
+Total records quarantined: 1172
+Total accepted with warnings: 119
+
+========================================================================
+UNRESOLVED BUSINESS QUESTIONS & ASSUMPTIONS
+========================================================================
+1. Day 1 products.json is malformed (JSON parse error at line 41, col 3).
+   No Day 1 products table exists in Bronze, so Day 1 transactions CANNOT be
+   checked for UNKNOWN_PRODUCT_ID referential integrity. Those checks are
+   skipped for Day 1 transactions. This is a known gap, not a data error.
+
+2. account_id referential integrity (transactions.account_id ->
+   customers.account_id) is treated as a WARNING, not a hard error, because
+   an account may exist in the banking system without appearing in this
+   particular customer extract.
+
+3. Each day is treated as an independent batch for referential integrity.
+   Day 2 transactions are validated against Day 2 branches/products only.
+
+4. Negative transaction amounts are flagged as a WARNING (NEGATIVE_AMOUNT),
+   not rejected. The data does not establish whether negative amounts mean
+   refunds, errors, or legitimate adjustments. Refund handling requires a
+   documented business rule before it can be enforced as a hard error.
+
+5. Transaction status variations (e.g. 'Faild', 'Succes', 'pending') are
+   flagged as INCONSISTENT_STATUS_CASE warnings. No status value is rejected
+   because the valid status set is not formally documented in the source.
+
+6. Malformed JSON (Day 1 products.json) is never repaired. The source file
+   remains unchanged. It must be fixed at the source and re-ingested.
+
+Reproducibility: Rerunning Step 3 replaces all Silver tables (full refresh),
+producing identical results from the same Bronze input.
+
+========================================================================
+RETAIL BANKING PIPELINE - STEP 3
+DATA-QUALITY / SILVER LAYER REPORT
+========================================================================
+Run timestamp (UTC): 2026-10-24T07:06:59.696586+00:00
+Bronze source DB    : C:\Users\yugsa\hcl_hackathon\data\bronze\retail_banking_bronze.duckdb
+Silver output DB    : C:\Users\yugsa\hcl_hackathon\data\silver\retail_banking_silver.duckdb
+
+NOTE: Bronze/raw data was only READ, never modified.
+      Accepted and quarantined records are in SEPARATE Silver tables.
+      Every quarantined record carries explicit reason codes.
+      Warnings do NOT cause rejection unless a hard rule also applies.
+
+------------------------------------------------------------------------
+Source file : branches.csv (Day 1)
+Bronze table: bronze_branches_day1 (branches)
+Records received : 102
+Records accepted : 99
+Records quarantined (hard errors): 3
+Accepted with warnings : 95
+
+Rejection reasons (hard errors):
+  DUPLICATE_BRANCH_ID                 3
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_REGION_CASE            95
+  MISSING_MANAGER_NAME                4
+
+------------------------------------------------------------------------
+Source file : customers.csv (Day 1)
+Bronze table: bronze_customers_day1 (customers)
+Records received : 257
+Records accepted : 231
+Records quarantined (hard errors): 26
+Accepted with warnings : 4
+
+Rejection reasons (hard errors):
+  DUPLICATE_CUSTOMER_ID               6
+  FUTURE_DOB                          4
+  INVALID_EMAIL                       12
+  MISSING_ACCOUNT_ID                  4
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_GENDER                 4
+
+------------------------------------------------------------------------
+Source file : transactions.csv (Day 1)
+Bronze table: bronze_transactions_day1 (transactions)
+Records received : 940
+Records accepted : 866
+Records quarantined (hard errors): 74
+Accepted with warnings : 220
+
+Rejection reasons (hard errors):
+  DUPLICATE_TRANSACTION_ID            40
+  UNKNOWN_BRANCH_ID                   37
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_STATUS_CASE            50
+  MISSING_IS_REFUND                   130
+  NEGATIVE_AMOUNT                     15
+  NON_INR_CURRENCY                    20
+  UNKNOWN_ACCOUNT_ID                  29
+
+------------------------------------------------------------------------
+Source file : branches_day2.csv (Day 2)
+Bronze table: bronze_branches_day2 (branches)
+Records received : 2
+Records accepted : 2
+Records quarantined (hard errors): 0
+Accepted with warnings : 2
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_REGION_CASE            2
+
+------------------------------------------------------------------------
+Source file : customer_updates_day2.csv (Day 2)
+Bronze table: bronze_customer_updates_day2 (customers)
+Records received : 47
+Records accepted : 44
+Records quarantined (hard errors): 3
+Accepted with warnings : 1
+
+Rejection reasons (hard errors):
+  INVALID_EMAIL                       3
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_GENDER                 1
+
+------------------------------------------------------------------------
+Source file : products_day2.json (Day 2)
+Bronze table: bronze_products_day2 (products)
+Records received : 18
+Records accepted : 17
+Records quarantined (hard errors): 1
+Accepted with warnings : 17
+
+Rejection reasons (hard errors):
+  MISSING_PRODUCT_NAME                1
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_CATEGORY_CASE          17
+  IS_ACTIVE_STRING                    17
+
+------------------------------------------------------------------------
+Source file : transactions_day2.csv (Day 2)
+Bronze table: bronze_transactions_day2 (transactions)
+Records received : 199
+Records accepted : 16
+Records quarantined (hard errors): 183
+Accepted with warnings : 5
+
+Rejection reasons (hard errors):
+  DUPLICATE_TRANSACTION_ID            7
+  UNKNOWN_BRANCH_ID                   11
+  UNKNOWN_PRODUCT_ID                  182
+
+Warning flags (accepted, not rejected):
+  INCONSISTENT_STATUS_CASE            2
+  NEGATIVE_AMOUNT                     1
+  NON_INR_CURRENCY                    1
+  UNKNOWN_ACCOUNT_ID                  1
+
+========================================================================
+OVERALL TOTALS
+========================================================================
+Total records received   : 1565
+Total records accepted   : 1275
+Total records quarantined: 290
+Total accepted with warnings: 344
+
+========================================================================
+UNRESOLVED BUSINESS QUESTIONS & ASSUMPTIONS
+========================================================================
+1. Day 1 products.json is malformed (JSON parse error at line 41, col 3).
+   No Day 1 products table exists in Bronze, so Day 1 transactions CANNOT be
+   checked for UNKNOWN_PRODUCT_ID referential integrity. Those checks are
+   skipped for Day 1 transactions. This is a known gap, not a data error.
+
+2. account_id referential integrity (transactions.account_id ->
+   customers.account_id) is treated as a WARNING, not a hard error, because
+   an account may exist in the banking system without appearing in this
+   particular customer extract.
+
+3. Each day is treated as an independent batch for referential integrity.
+   Day 2 transactions are validated against Day 2 branches/products only.
+
+4. Negative transaction amounts are flagged as a WARNING (NEGATIVE_AMOUNT),
+   not rejected. The data does not establish whether negative amounts mean
+   refunds, errors, or legitimate adjustments. Refund handling requires a
+   documented business rule before it can be enforced as a hard error.
+
+5. Transaction status variations (e.g. 'Faild', 'Succes', 'pending') are
+   flagged as INCONSISTENT_STATUS_CASE warnings. No status value is rejected
+   because the valid status set is not formally documented in the source.
+
+6. Malformed JSON (Day 1 products.json) is never repaired. The source file
+   remains unchanged. It must be fixed at the source and re-ingested.
+
+Reproducibility: Rerunning Step 3 replaces all Silver tables (full refresh),
+producing identical results from the same Bronze input.
+

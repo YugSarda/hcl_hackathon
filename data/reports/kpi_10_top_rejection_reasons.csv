@@ -1,0 +1,8 @@
+source_filename,reason_code,occurrence_count,reason_rank
+branches.csv,DUPLICATE_BRANCH_ID,3,1
+customers.csv,INVALID_EMAIL,12,1
+customers.csv,DUPLICATE_CUSTOMER_ID,6,2
+customers.csv,FUTURE_DOB,4,3
+customers.csv,MISSING_ACCOUNT_ID,4,4
+transactions.csv,DUPLICATE_TRANSACTION_ID,40,1
+transactions.csv,UNKNOWN_BRANCH_ID,37,2

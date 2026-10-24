@@ -1,0 +1,4 @@
+source_filename,source_day,bronze_table,received,accepted,quarantined,accepted_with_warnings,rejection_pct,acceptance_pct,rejection_reason_codes
+branches.csv,Day 1,bronze_branches_day1,102,99,3,95,2.9412,97.0588,DUPLICATE_BRANCH_ID
+customers.csv,Day 1,bronze_customers_day1,257,231,26,4,10.1167,89.8833,"DUPLICATE_CUSTOMER_ID, FUTURE_DOB, INVALID_EMAIL, MISSING_ACCOUNT_ID"
+transactions.csv,Day 1,bronze_transactions_day1,940,866,74,220,7.8723,92.1277,"DUPLICATE_TRANSACTION_ID, UNKNOWN_BRANCH_ID"

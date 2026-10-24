@@ -1,0 +1,12 @@
+[2026-10-24T06:57:02.347235+00:00] JSON_PARSE_ERROR: products.json (Day 1)
+  Error: Expecting ',' delimiter
+  Line: 41, Column: 3
+  Action: Preserve original file; do not silently repair.
+          Investigate and fix in a later cleaning step.
+
+[2026-10-24T06:57:14.253662+00:00] JSON_PARSE_ERROR: products.json (Day 1)
+  Error: Expecting ',' delimiter
+  Line: 41, Column: 3
+  Action: Preserve original file; do not silently repair.
+          Investigate and fix in a later cleaning step.
+
